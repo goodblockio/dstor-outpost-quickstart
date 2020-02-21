@@ -1,1 +1,25 @@
-Todo: update repo/snippets/REQUIREMENTS
+### Processor
+Intel i3 dual core @ 2Ghz or better. (Operators may be able to use a lesser system, but it is not supported.)
+
+### OS
+Ubuntu Linux version 18.04 LTS or later LTS version.
+
+### Memory
+8Gb Ram.  More is better.
+
+### Network
+IPv6 is _required_. NAT-ed IPv4 is acceptable for basic needs. A public IPv4 address assigned to a local interface is needed if you want to resolve IPv4 requests for dStor too.  Resolving IPv4 requests for dStor is optional but may lead to more data service.
+
+### Storage
+Partitions must be empty and mounted somewhere that is reboot proof.  XFS is recommended, however ZFS, EXT4 and other file systems should be ok.
+
+#### Data Partition
+2 TiB in size (or more) and the mount point's final subpath must end in `data`.
+
+Example: `/mnt/dstor/outpost-data` OR `/data`
+
+#### Cache Partition
+The cache partition must be 20% in size of the data partition (or more) and its mount point final subpath must end in `cache`.
+
+Example: `/mnt/dstor/outpost-cache` OR `/cache`
+

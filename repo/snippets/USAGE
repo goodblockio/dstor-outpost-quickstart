@@ -1,1 +1,10 @@
-Todo: update repo/snippets/USAGE
+### Quickstart
+```
+sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+git clone https://github.com/goodblockio/dstor-outpost-quickstart.git
+cd dstor-outpost-quickstart
+./start_here
+```
+
