@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd $REPO_PATH/repo/bin
+./overlay_repo.py

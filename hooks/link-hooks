@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+readarray -t <<<$(find . -type f | grep -v link-hooks)
+
+cd ../.git/hooks
+#../../hooks/./pre-commit
+for f in "${MAPFILE[@]}"; do
+  ln -s "../../hooks/$f"
+done
+
+cd ../../hooks
+
