@@ -41,7 +41,7 @@ function sequence() {
 
   echo -n "Size of auto detected cache partition: ";
   # Pull it and its prefix so we can do math
-  PCACHE_SIZE=$(awk '{print $1}' | sed -e 's/G$//' <<< "$PCACHE")
+  PCACHE_SIZE=$(awk '{print $1}' <<< "$PCACHE" | sed -e 's/G$//')
   # divide partiton cache by 10 as a float, round up, and then multiply back
   # this is in to add some fuzzy logic around formatted partition sizes
   # before 599 would end up as 500 and if 600 was the cut off then it would fail
