@@ -80,6 +80,10 @@ SPEEDTEST=""
 PDATA_SIZE=""
 PCACHE_SIZE=""
 
+PDATA_PATH=""
+PCACHE_PATH=""
+
+
 mkdir $HOME/.dStor 2> /dev/null
 
 function error_install_package() {
@@ -138,6 +142,8 @@ JSON_RESULTS="{
   'EIP6P4001': '$EIP6P4001',
   'PDATA_SIZE': '$PDATA_SIZE',
   'PCACHE_SIZE': '$PCACHE_SIZE',
+  'PDATA_PATH': '$PDATA_PATH',
+  'PCACHE_PATH': '$PCACHE_PATH',
   'SPEEDTEST': [
 $SPEEDTEST
   ]
