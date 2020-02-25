@@ -40,7 +40,15 @@ function sequence() {
   r_t
 
   echo -n "Size of auto detected cache partition: ";
-  PCACHE_SIZE=$(awk '{print $1;}' <<< "$PCACHE" | sed -e 's/G$/\/100*100/' | bc)
+  # Pull it's prefix so we can do math
+  PCACHE_SIZE=$(sed -e 's/G$//' <<< "$PCACHE")
+  # divide partiton cache by 10 as a float, round up, and then multiply back
+  # this is in to add some fuzzy logic around formatted partition sizes
+  # before 599 would end up as 500 and if 600 was the cut off then it would fail
+  # now if you are within 5G of your target, it will allow a pass
+
+  PCACHE_SIZE=$(python -c "import sys; from math import ceil; print(ceil(float($PCACHE_SIZE)/10.0)*10)")
+
   PCACHE_MIN_SIZE=$(bc <<< "($PDATA_SIZE*.2)/100*100")
 
   if [ $PCACHE_SIZE -ge $PCACHE_MIN_SIZE ]; then
