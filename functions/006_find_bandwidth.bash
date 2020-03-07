@@ -10,7 +10,7 @@ function sequence() {
   TEMPFILE="$(mktemp)"
   TEMPRESU1="$(mktemp)"
   TEMPRESU2="$(mktemp)"
-  SERVERS="$($CLI --list | head -n 7 | tail -n +2 | cut -d\) -f1)"
+  SERVERS="$($CLI --list --exclude 20721 | head -n 7 | tail -n +2 | cut -d\) -f1)"
 
   $CLI --csv-header > $TEMPFILE
 
