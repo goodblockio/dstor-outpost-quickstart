@@ -111,7 +111,8 @@ function sequence() {
   fi
 
   i_t;echo -n "$IP6 world accessible for ports 80,443,4001/tcp: "
-  [[ $EIP6P80 == $TESTUUID ]] && [[ $EIP6P443 == $TESTUUID ]] && [[ $EIP6P4001 == $TESTUUID ]] && (p_t; echo "PASS"; r_t; return 1) || (f_t; echo "FAIL"; r_t; return 0)
+  [[ $EIP6P80 == $TESTUUID ]] && [[ $EIP6P443 == $TESTUUID ]] && [[ $EIP6P4001 == $TESTUUID ]] && (p_t; echo "PASS"; r_t) || (f_t; echo "FAIL"; r_t; return 0)
+  return 1
 }
 
 sequence
