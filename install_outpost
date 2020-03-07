@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Adjust Hostname
+# Install Go-IPFS
+
+# Setup Certbot
+# Setup Go-IPFS
+# Setup Nginx
+# Setup beacon
+
+echo "# Backtick the output of this script to auto run these commands"
+echo '
+
+HOSTNAME=`jq -r .hostname ~/.dStor/outpost.keys`
+V6=`jq -r .public_v6 ~/.dStor/outpost.keys`
+V4=`jq -r .public_v4 ~/.dStor/outpost.keys`
+
+sudo hostnamectl set-hostname $HOSTNAME
+
+echo $V6 $HOSTNAME | sudo tee -a /etc/hosts
+echo $V4 $HOSTNAME | sudo tee -a /etc/hosts
+
+# The best thing to do is reboot here so hostnamectl takes everywhere
+
+sudo certbot certonly --nginx -d $HOSTNAME  -n --agree-tos
+
+# Todo: Setup Nginx Here
+
+$ cat files/outpost-locations
+proxy_read_timeout 10s;
+    location / {
+        proxy_pass http://127.0.0.1:8080/ipfs/;
+    }
+    location /api/v0/ls {
+        proxy_pass http://127.0.0.1:5001/api/v0/ls;
+    }
+    location /api/v0/cat {
+        proxy_pass http://127.0.0.1:5001/api/v0/cat;
+    }
+
+$ cat files/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name $hostname;
+    include "snippets/outpost-locations";
+
+}
+
+go get -u -d github.com/ipfs/go-ipfs
+cd $GOPATH/src/github.com/ipfs/go-ipfs && make install
+
+IPFS=$GOPATH/bin/ipfs
+$IPFS init
+$IPFS bootstrap rm --all
+$IPFS bootstrap add /dnsaddr/d.b.dstor.cloud/tcp/4001/ipfs/QmbF91ZdurdDyfKE51AJuCNcwfZ5XVWb7KhpzwYBPwtNXE
+$IPFS bootstrap add /dnsaddr/l.b.dstor.cloud/tcp/4001/ipfs/QmV11Fam6FKRkCht2aHfaxJY1jzAxafifH9m5gJThGjYaV
+$IPFS bootstrap add /dnsaddr/s.b.dstor.cloud/tcp/4001/ipfs/QmZvjC3wxqrob4H8W4TiupVWSbB96sqii6ukrs5vZBJ1jH
+
+dig TXT +noall +short +answer swarmkey.dstor.cloud | tr -d \\\" | base64 -d > $HOME/.ipfs/swarm.key
+
+$IPFS config --json Addresses.Swarm \'["/ip6/::/tcp/4001"]\'
+$IPFS config --json Addresses.API \'"/ip4/127.0.0.1/tcp/5001"\'
+$IPFS config --json Addresses.Gateway \'"/ip4/127.0.0.1/tcp/8001"\'
+
+crontab -e
+# Paste In: "@reboot nohup $GOPATH/bin/ipfs daemon --enable-pubsub-experiment 2>&1 | logger -t ipfs &
+'

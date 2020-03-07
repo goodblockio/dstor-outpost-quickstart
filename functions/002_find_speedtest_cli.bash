@@ -10,7 +10,7 @@ function sequence() {
   # cheating the passback of the path to 006_find_bandwidth for speedtest-cli ;)
   SPEEDTEST="$(mktemp -d)"
   cd $SPEEDTEST
-  curl -sLo speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+  curl -sLo speedtest-cli https://raw.githubusercontent.com/StephanieSunshine/speedtest-cli/master/speedtest.py
   chmod +x speedtest-cli
   SPEEDTEST="$SPEEDTEST/speedtest-cli"
 
