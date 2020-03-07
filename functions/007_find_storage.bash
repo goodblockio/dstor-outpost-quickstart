@@ -47,7 +47,7 @@ function sequence() {
   # before 599 would end up as 500 and if 600 was the cut off then it would fail
   # now if you are within 5G of your target, it will allow a pass
 
-  PCACHE_SIZE=$(python -c "import sys; from math import ceil; print(int(ceil(float($PCACHE_SIZE)/10.0)*10))")
+  PCACHE_SIZE=$(python3 -c "import sys; from math import ceil; print(int(ceil(float($PCACHE_SIZE)/10.0)*10))")
 
   PCACHE_MIN_SIZE=$(bc <<< "($PDATA_SIZE*.2)/100*100")
 
