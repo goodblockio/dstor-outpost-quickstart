@@ -107,37 +107,16 @@ function sequence() {
 
   if [[ $IP4 != "" ]]; then
     i_t;echo -n "$IP4 world accessible for ports 80,443,4001/tcp: "
-    if [ "$EIP4P80" = $TESTUUID ] && [ "$EIP4P443" = $TESTUUID ] && [ "$EIP4P4001" = $TESTUUID ]; then
-      p_t
-      echo "PASS"
-      r_t
-    else
-      f_t
-      echo "FAIL"
-      r_t
-    fi
+    [[ $EIP4P80 == $TESTUUID ]] && [[ $EIP4P443 == $TESTUUID ]] && [[ $EIP4P4001 == $TESTUUID ]] && (p_t; echo "PASS"; r_t) || (f_t; echo "FAIL"; r_t)
   fi
 
   i_t;echo -n "$IP6 world accessible for ports 80,443,4001/tcp: "
-
-  if [ "$EIP6P80" == $TESTUUID ] && [ $EIP6P443 == $TESTUUID ] && [ $EIP6P4001 == $TESTUUID ]; then
-    p_t
-    echo "PASS"
-    r_t
-    return 1
-  else
-    f_t
-    echo "FAIL"
-    r_t
-    return 0
-  fi
-
+  [[ $EIP6P80 == $TESTUUID ]] && [[ $EIP6P443 == $TESTUUID ]] && [[ $EIP6P4001 == $TESTUUID ]] && (p_t; echo "PASS"; r_t; return 1) || (f_t; echo "FAIL"; r_t; return 0)
 }
 
 sequence
 
 # Exception handler
-
 if [ $? -eq 0 ]; then
   exit 255
 fi
