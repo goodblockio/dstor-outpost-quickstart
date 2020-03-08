@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop19)
+# dStor Outpost Quickstart Install (v0.0.3-develop20)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -54,13 +54,18 @@ sudo systemctl stop nginx
 sudo systemctl disable nginx
 
 # Create your service user on your data partition and then use apparmor to allow the folder as a home folder
+# Add the parent home folder to app armor ( &quot;/data&quot; in this case )
+sudo dpkg-reconfigure apparmor
+
 sudo groupadd dstor-outpost
 
 # dstor only needs sudo access during the install and can be safely removed later
 sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dstor-outpost
 
-# Add the parent home folder to app armor ( &quot;/data&quot; in this case )
-sudo dpkg-reconfigure apparmor
+# Set the dstor-outpost users password to something temp and exp
+cat /dev/urandom | tr -dc &#x27;a-zA-Z0-9&#x27; | fold -w 12 | head -n 1
+
+sudo passwd dstor-outpost &amp;&amp; sudo passwd -x 1 dstor-outpost
 
 sudo -i -u dstor-outpost
 git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
@@ -92,5 +97,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAYTSORUGQ5DANZOGA2DONBRHA======
+(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAZDAORRGY5DINBOGU2TSMRUHE======
 
