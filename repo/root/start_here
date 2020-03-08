@@ -150,4 +150,6 @@ $SPEEDTEST
 }"
 RESULTS=$(mktemp --tmpdir=$HOME/.dStor 'XXXXX.results')
 p_t;echo "Saving results to $RESULTS";r_t
+echo "Next: sudo wget -o /usr/local/bin/outpost-cli https://github.com/goodblockio/dstor-releases/blob/master/outpost-cli/outpost-cli?raw=true && sudo chmod +x /usr/local/bin/outpost-cli"
+
 echo "$JSON_RESULTS" | tr \' \" > $RESULTS

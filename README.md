@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop17)
+# dStor Outpost Quickstart Install (v0.0.3-develop18)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -45,24 +45,37 @@ Example: `/mnt/dstor/outpost-cache` OR `/cache`
 
 ### Quickstart
 ```
+# Format and mount your /data and /cache partitions somewhere ( don&#x27;t forget fstab! )
+
 sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools
+sudo snap install go --classic
+
 sudo systemctl stop nginx
 sudo systemctl disable nginx
-git clone https://github.com/goodblockio/dstor-outpost-quickstart.git
+
+# Create your service user on your data partition and then use apparmor to allow the folder as a home folder
+sudo groupadd dstor-outpost
+
+# dstor only needs sudo access during the install and can be safely removed later
+sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dstor-outpost
+
+# Add the parent home folder to app armor ( &quot;/data&quot; in this case )
+sudo dpkg-reconfigure apparmor
+
+sudo -i -u dstor-outpost
+git --depth 1 --branch develop clone https://github.com/goodblockio/dstor-outpost-quickstart.git
 cd dstor-outpost-quickstart
 ./start_here
 ```
 
 
-
 ## Notes
 
-### Ubuntu 20.04 does not have a default mapping for Python
+### Ubuntu 18.04.4/20.04 does not have a default mapping for Python
 Ubuntu is currently moving from Python 2 to Python 3 as its default Python installation.  With Ubuntu 20.04, the environment shell script can&#x27;t find &quot;python&quot; because it hasn&#x27;t been mapped to a default Python 3.  To fix this run:
 ```
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ```
-
 
 
 ## Support
@@ -79,5 +92,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAYDAORVGA5DEMZOGI4TENRXG4======
+(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAYTSORUGI5DGMROG42DGNBUHE======
 

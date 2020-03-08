@@ -1,10 +1,24 @@
 ### Quickstart
 ```
+# Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
+
 sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools
+sudo snap install go --classic
+
 sudo systemctl stop nginx
 sudo systemctl disable nginx
-git clone https://github.com/goodblockio/dstor-outpost-quickstart.git
+
+# Create your service user on your data partition and then use apparmor to allow the folder as a home folder
+sudo groupadd dstor-outpost
+
+# dstor only needs sudo access during the install and can be safely removed later
+sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dstor-outpost
+
+# Add the parent home folder to app armor ( "/data" in this case )
+sudo dpkg-reconfigure apparmor
+
+sudo -i -u dstor-outpost
+git --depth 1 --branch develop clone https://github.com/goodblockio/dstor-outpost-quickstart.git
 cd dstor-outpost-quickstart
 ./start_here
 ```
-
