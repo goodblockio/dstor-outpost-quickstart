@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop18)
+# dStor Outpost Quickstart Install (v0.0.3-develop19)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -63,7 +63,7 @@ sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dst
 sudo dpkg-reconfigure apparmor
 
 sudo -i -u dstor-outpost
-git --depth 1 --branch develop clone https://github.com/goodblockio/dstor-outpost-quickstart.git
+git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
 cd dstor-outpost-quickstart
 ./start_here
 ```
@@ -92,5 +92,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAYTSORUGI5DGMROG42DGNBUHE======
+(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBXEAYTSORUGQ5DANZOGA2DONBRHA======
 

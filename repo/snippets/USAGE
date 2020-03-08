@@ -18,7 +18,7 @@ sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dst
 sudo dpkg-reconfigure apparmor
 
 sudo -i -u dstor-outpost
-git --depth 1 --branch develop clone https://github.com/goodblockio/dstor-outpost-quickstart.git
+git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
 cd dstor-outpost-quickstart
 ./start_here
 ```
