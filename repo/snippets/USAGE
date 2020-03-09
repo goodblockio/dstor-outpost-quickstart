@@ -2,7 +2,7 @@
 ```
 # Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
 
-sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools
+sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx
 sudo snap install go --classic
 
 sudo systemctl stop nginx

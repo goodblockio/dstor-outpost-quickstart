@@ -22,7 +22,7 @@ echo 'server {
 sudo systemctl enable nginx && sudo systemctl restart nginx
 
 # --dry-run is your friend here
-sudo certbot run --nginx -d `jq .hostname $HOME/.dStor/outpost.keys` --agree-tos
+sudo certbot run --nginx -d `jq -r .hostname $HOME/.dStor/outpost.keys` --agree-tos
 
 # Cleanup old junk
 sudo awk -i inplace 'BEGIN {FS="# --"; RS="\0"} {print $2}' /etc/nginx/sites-enabled/default
@@ -31,12 +31,12 @@ sudo awk -i inplace 'BEGIN {FS="# --"; RS="\0"} {print $2}' /etc/nginx/sites-ena
 sudo killall nginx && sudo systemctl enable nginx && sudo systemctl restart nginx
 
 # IPFS
-sudo snap install go --classic
 
 export `go env | grep GOPATH | tr -d \"`
 
 go get -u -d github.com/ipfs/go-ipfs
 cd $GOPATH/src/github.com/ipfs/go-ipfs && make install
+
 
 IPFS=$GOPATH/bin/ipfs
 
