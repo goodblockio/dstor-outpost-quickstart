@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# IPFS
+
+export `go env | grep GOPATH | tr -d \"`
+
+go get -u -d github.com/ipfs/go-ipfs
+cd $GOPATH/src/github.com/ipfs/go-ipfs && make install
+
+
+IPFS=$GOPATH/bin/ipfs
+
+$IPFS init
+$IPFS bootstrap rm --all
+$IPFS bootstrap add /dns6/d.b.dstor.cloud/tcp/4001/ipfs/QmbF91ZdurdDyfKE51AJuCNcwfZ5XVWb7KhpzwYBPwtNXE
+$IPFS bootstrap add /dns6/l.b.dstor.cloud/tcp/4001/ipfs/QmV11Fam6FKRkCht2aHfaxJY1jzAxafifH9m5gJThGjYaV
+$IPFS bootstrap add /dns6/s.b.dstor.cloud/tcp/4001/ipfs/QmZvjC3wxqrob4H8W4TiupVWSbB96sqii6ukrs5vZBJ1jH
+
+dig TXT +noall +short +answer swarmkey.dstor.cloud | tr -d \" | base64 -d > $HOME/.ipfs/swarm.key
+
+$IPFS config --json Addresses.Swarm '["/ip6/::/tcp/4001"]'
+$IPFS config --json Addresses.API '"/ip4/127.0.0.1/tcp/5001"'
+$IPFS config --json Addresses.Gateway '"/ip4/127.0.0.1/tcp/8001"'

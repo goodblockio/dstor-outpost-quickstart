@@ -1,61 +1,39 @@
 #!/usr/bin/env bash
 
-# Seed for Certbot
-echo 'proxy_read_timeout 10s;
-location /ipfs/ {
-    proxy_pass http://127.0.0.1:8001/ipfs/;
-}
+service_file="
+[Unit]
+Description=dStor IPFS
+After=network.target
 
-location ~* /api/v0/(tar/cat|ls|get|file/ls|cat|version|stats) {
-    proxy_pass http://127.0.0.1:5001$uri;
-}' | sudo tee /etc/nginx/snippets/outpost-locations
+[Service]
+Type=simple
+User=$(id -un)
+Group=$(id -gn)
 
-echo 'server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-    server_name delete_me;
-    include "snippets/outpost-locations";
-}
-# --' | sudo tee /etc/nginx/sites-enabled/default
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
 
-#Certbot expect Nginx to be running already, Nginx should be disabled at this point
-sudo systemctl enable nginx && sudo systemctl restart nginx
+WorkingDirectory=$HOME
+ExecStart=$HOME/go/bin/ipfs daemon --enable-pubsub-experiment
 
-# --dry-run is your friend here
-sudo certbot run --nginx -d `jq -r .hostname $HOME/.dStor/outpost.keys` --agree-tos
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ipfs
 
-# Cleanup old junk
-sudo awk -i inplace 'BEGIN {FS="# --"; RS="\0"} {print $2}' /etc/nginx/sites-enabled/default
+[Install]
+WantedBy=multi-user.target
+"
 
-# Clean up the mess Certbot made and reenable nginx
-sudo killall nginx && sudo systemctl enable nginx && sudo systemctl restart nginx
+echo service_file | sudo tee /lib/systemd/system/ipfs.service
 
-# IPFS
-
-export `go env | grep GOPATH | tr -d \"`
-
-go get -u -d github.com/ipfs/go-ipfs
-cd $GOPATH/src/github.com/ipfs/go-ipfs && make install
-
-
-IPFS=$GOPATH/bin/ipfs
-
-$IPFS init
-$IPFS bootstrap rm --all
-$IPFS bootstrap add /dns6/d.b.dstor.cloud/tcp/4001/ipfs/QmbF91ZdurdDyfKE51AJuCNcwfZ5XVWb7KhpzwYBPwtNXE
-$IPFS bootstrap add /dns6/l.b.dstor.cloud/tcp/4001/ipfs/QmV11Fam6FKRkCht2aHfaxJY1jzAxafifH9m5gJThGjYaV
-$IPFS bootstrap add /dns6/s.b.dstor.cloud/tcp/4001/ipfs/QmZvjC3wxqrob4H8W4TiupVWSbB96sqii6ukrs5vZBJ1jH
-
-dig TXT +noall +short +answer swarmkey.dstor.cloud | tr -d \" | base64 -d > $HOME/.ipfs/swarm.key
-
-$IPFS config --json Addresses.Swarm '["/ip6/::/tcp/4001"]'
-$IPFS config --json Addresses.API '"/ip4/127.0.0.1/tcp/5001"'
-$IPFS config --json Addresses.Gateway '"/ip4/127.0.0.1/tcp/8001"'
+sudo systemctl enable ipfs
+sudo systemctl restart ipfs
+sudo systemctl status ipfs
 
 # Systemd
 # crontab -e
 echo '
-Paste in cron:
-@reboot nohup '$GOPATH'/bin/ipfs daemon --enable-pubsub-experiment 2>&1 | logger -t ipfs &
+If everything looks right, add your heartbeat to cron:
 */1 * * * * /usr/local/bin/outpost-cli OpHeartbeat 2>&1 | logger -t dstor-heartbeat
 '

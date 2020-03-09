@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+sudo wget -O /usr/local/bin/outpost-cli https://github.com/goodblockio/dstor-releases/blob/master/outpost-cli/outpost-cli?raw=true
+sudo chmod +x /usr/local/bin/outpost-cli

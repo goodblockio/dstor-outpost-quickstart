@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Seed for Certbot
+echo 'proxy_read_timeout 10s;
+location /ipfs/ {
+    proxy_pass http://127.0.0.1:8001/ipfs/;
+}
+
+location ~* /api/v0/(tar/cat|ls|get|file/ls|cat|version|stats) {
+    proxy_pass http://127.0.0.1:5001$uri;
+}' | sudo tee /etc/nginx/snippets/outpost-locations
+
+echo 'server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    server_name delete_me;
+    include "snippets/outpost-locations";
+}
+# --' | sudo tee /etc/nginx/sites-enabled/default
+
+#Certbot expect Nginx to be running already, Nginx should be disabled at this point
+sudo systemctl enable nginx && sudo systemctl restart nginx
+
+# --dry-run is your friend here
+sudo certbot run --nginx -d `jq -r .hostname $HOME/.dStor/outpost.keys` --agree-tos
+
+# Cleanup old junk
+sudo awk -i inplace 'BEGIN {FS="# --"; RS="\0"} {print $2}' /etc/nginx/sites-enabled/default
+
+# Clean up the mess Certbot made and reenable nginx
+sudo killall nginx && sudo systemctl enable nginx && sudo systemctl restart nginx
