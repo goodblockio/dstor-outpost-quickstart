@@ -62,7 +62,6 @@ def update_repo():
     t = Path(template).read_text()
     d = str.split(template,'repo/root/')[1]
     #print("%s -> %s/%s:\n%s" % (template, handles['REPO_PATH'], d, pystache.render(t,handles)))
-    mye = lambda u: u
     Path("%s/%s" % (handles['REPO_PATH'], d)).write_text(html.unescape(pystache.render(t,handles)))
     subprocess.getoutput("git add %s/%s" % (handles['REPO_PATH'], d))
 

@@ -16,8 +16,7 @@ function sequence() {
 
   for s in $SERVERS; do
     echo Testing Speedtest server $s
-    $CLI
-     $s >> $TEMPFILE
+    $CLI --csv --single --server $s >> $TEMPFILE
   done
 
   # Numbers sanitized in miller as csv values
