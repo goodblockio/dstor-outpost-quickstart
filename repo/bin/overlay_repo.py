@@ -7,6 +7,7 @@ from pathlib import Path
 import pystache
 import datetime
 import base64
+import html
 
 now = datetime.datetime.now()
 
@@ -62,7 +63,7 @@ def update_repo():
     d = str.split(template,'repo/root/')[1]
     #print("%s -> %s/%s:\n%s" % (template, handles['REPO_PATH'], d, pystache.render(t,handles)))
     mye = lambda u: u
-    Path("%s/%s" % (handles['REPO_PATH'], d)).write_text(pystache.render(t,handles, escape=mye ))
+    Path("%s/%s" % (handles['REPO_PATH'], d)).write_text(html.unescape(pystache.render(t,handles)))
     subprocess.getoutput("git add %s/%s" % (handles['REPO_PATH'], d))
 
 start_dir = os.getcwd()

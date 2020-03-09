@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop21)
+# dStor Outpost Quickstart Install (v0.0.3-develop22)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -30,7 +30,7 @@ IPv6 is _required_. NAT-ed IPv4 is acceptable for basic needs. A public IPv4 add
 Partitions must be empty and mounted somewhere that is reboot proof.  XFS is recommended, however ZFS, EXT4 and other file systems should be ok.
 
 #### Data Partition
-2 TiB in size (or more) and the mount point&#x27;s final subpath must end in `data`.
+2 TiB in size (or more) and the mount point's final subpath must end in `data`.
 
 Example: `/mnt/dstor/outpost-data` OR `/data`
 
@@ -45,7 +45,7 @@ Example: `/mnt/dstor/outpost-cache` OR `/cache`
 
 ### Quickstart
 ```
-# Format and mount your /data and /cache partitions somewhere ( don&#x27;t forget fstab! )
+# Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
 
 sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx
 sudo snap install go --classic
@@ -54,7 +54,7 @@ sudo systemctl stop nginx
 sudo systemctl disable nginx
 
 # Create your service user on your data partition and then use apparmor to allow the folder as a home folder
-# Add the parent home folder to app armor ( &quot;/data&quot; in this case )
+# Add the parent home folder to app armor ( "/data" in this case )
 sudo dpkg-reconfigure apparmor
 
 sudo groupadd dstor-outpost
@@ -63,9 +63,9 @@ sudo groupadd dstor-outpost
 sudo useradd -d /data/dstor-outpost -g dstor-outpost -G sudo -m -s /bin/bash dstor-outpost
 
 # Set the dstor-outpost users password to something temp and exp
-cat /dev/urandom | tr -dc &#x27;a-zA-Z0-9&#x27; | fold -w 12 | head -n 1
+cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 12 | head -n 1
 
-sudo passwd dstor-outpost &amp;&amp; sudo passwd -x 1 dstor-outpost
+sudo passwd dstor-outpost && sudo passwd -x 1 dstor-outpost
 
 sudo -i -u dstor-outpost
 git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
@@ -77,7 +77,7 @@ cd dstor-outpost-quickstart
 ## Notes
 
 ### Ubuntu 18.04.4/20.04 does not have a default mapping for Python
-Ubuntu is currently moving from Python 2 to Python 3 as its default Python installation.  With Ubuntu 20.04, the environment shell script can&#x27;t find &quot;python&quot; because it hasn&#x27;t been mapped to a default Python 3.  To fix this run:
+Ubuntu is currently moving from Python 2 to Python 3 as its default Python installation.  With Ubuntu 20.04, the environment shell script can't find "python" because it hasn't been mapped to a default Python 3.  To fix this run:
 ```
 sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 ```
@@ -97,5 +97,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBZEAYDKORSGQ5DKNZOGIZTGMRYGA======
+(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MBZEAYDKORTGE5DIMZOGI3TGOJYGQ======
 
