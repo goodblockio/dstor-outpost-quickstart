@@ -25,7 +25,7 @@ SyslogIdentifier=ipfs
 WantedBy=multi-user.target
 "
 
-echo service_file | sudo tee /lib/systemd/system/ipfs.service
+echo "$service_file" | sudo tee /lib/systemd/system/ipfs.service
 
 sudo systemctl enable ipfs
 sudo systemctl restart ipfs
