@@ -3,7 +3,7 @@
 # Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
 
 sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx
-sudo snap install go --classic
+sudo snap install go --classic --channel=1.14/stable
 
 sudo systemctl stop nginx
 sudo systemctl disable nginx
@@ -25,5 +25,17 @@ sudo passwd dstor-outpost && sudo passwd -x 1 dstor-outpost
 sudo -i -u dstor-outpost
 git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
 cd dstor-outpost-quickstart
+
+# Note your results file somewhere
 ./start_here
+./install_ipfs
+./install_cli
+ outpost-cli OpRegisterOutpost <account_key> <invite_key> <Country Code> <Path to valid results file>
+
+ # Use a valid email, no redirect
+ ./install_certbot
+ ./install_outpost
+
+ # Install Cron
+
 ```

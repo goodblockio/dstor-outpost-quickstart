@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop26)
+# dStor Outpost Quickstart Install (v0.0.3-develop27)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -48,7 +48,7 @@ Example: `/mnt/dstor/outpost-cache` OR `/cache`
 # Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
 
 sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx
-sudo snap install go --classic
+sudo snap install go --classic --channel=1.14/stable
 
 sudo systemctl stop nginx
 sudo systemctl disable nginx
@@ -70,7 +70,19 @@ sudo passwd dstor-outpost && sudo passwd -x 1 dstor-outpost
 sudo -i -u dstor-outpost
 git clone https://github.com/goodblockio/dstor-outpost-quickstart.git --depth 1
 cd dstor-outpost-quickstart
+
+# Note your results file somewhere
 ./start_here
+./install_ipfs
+./install_cli
+ outpost-cli OpRegisterOutpost <account_key> <invite_key> <Country Code> <Path to valid results file>
+
+ # Use a valid email, no redirect
+ ./install_certbot
+ ./install_outpost
+
+ # Install Cron
+
 ```
 
 
@@ -97,5 +109,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MJQEAYDGORSGU5DEOBOGE3DOMJTGM======
+(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MJQEAYDGORUGU5DANROGYZTEMRUGE======
 
