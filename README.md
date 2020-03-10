@@ -1,4 +1,4 @@
-# dStor Outpost Quickstart Install (v0.0.3-develop27)
+# dStor Outpost Quickstart Install (v0.1.0)
 
 *Note: This is a work in progress undergoing continuous, rapid development.* 
 
@@ -109,5 +109,5 @@ Except where underlying software is open source, this proprietary software is th
 
 
 -----
-(c) dStor 2020 ON2GK4DIMFXGSZJOGIYDEMBNGAZS2MJQEAYDGORUGU5DANROGYZTEMRUGE======
+(c) dStor 2020 
 
