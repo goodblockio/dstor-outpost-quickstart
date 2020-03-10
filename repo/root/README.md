@@ -5,7 +5,6 @@
 ## Table of Contents
 
 - [Requirements](#Requirements)
-- [Installation](#installation)
 - [Usage](#usage)
 - [Notes](#notes)
 - [Support](#support)
@@ -16,13 +15,13 @@
 
 {{REQUIREMENTS}}
 
-## Installation
-
-{{INSTALLATION}}
-
 ## Usage
 
 {{USAGE}}
+
+## Notes
+
+{{NOTES}}
 
 ## Support
 
@@ -38,3 +37,4 @@ Please contribute using [Github Flow](https://guides.github.com/introduction/flo
 
 -----
 (c) dStor {{YEAR}} {{DEV_VERSION}}
+

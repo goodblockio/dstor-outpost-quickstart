@@ -1,0 +1,154 @@
+#!/usr/bin/env bash
+
+# make the font bold
+function bold() {
+  tput bold
+}
+
+# break text font color
+function b_t() {
+  tput setaf 12
+}
+
+# info text font color
+function i_t() {
+  tput setaf 15
+}
+
+# pass text font color
+function p_t() {
+  tput setaf 10
+}
+
+# fail text font color
+function f_t() {
+  tput setaf 9
+}
+
+# reset text font color
+function r_t() {
+  tput sgr0
+}
+
+function break_t() {
+  b_t;echo  "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-";r_t
+}
+
+ECHO_SERVER="e.dstor.cloud"
+ID="$(egrep ID /etc/os-release | cut -d= -f2)"
+ID_LIKE="$(egrep ID_LIKE /etc/os-release | cut -d= -f2)"
+LSB_RELEASE="$(lsb_release -a)"
+ERROR=""
+VERSION="v{{VERSION}}"
+DEV_VERSION="{{DEV_VERSION}}"
+EGREP_V=""
+BUSYBOX_V=""
+JQ_V=""
+CURL_V=""
+STCLI_V=""
+NGINX_V=""
+MILLER_V=""
+CERTBOT_V=""
+
+UPAVG=""
+DOAVG=""
+PIAVG=""
+
+IP6=""
+IP4=""
+
+TESTUUID=$(uuidgen)
+
+IP4P80=""
+IP4P443=""
+IP4P4001=""
+
+EIP6P80=""
+EIP6P443=""
+EIP6P4001=""
+
+EIP4P80=""
+EIP4P443=""
+EIP4P4001=""
+
+EIP6P80=""
+EIP6P443=""
+EIP6P4001=""
+
+SPEEDTEST=""
+
+PDATA_SIZE=""
+PCACHE_SIZE=""
+
+PDATA_PATH=""
+PCACHE_PATH=""
+
+
+mkdir $HOME/.dStor 2> /dev/null
+
+function error_install_package() {
+  case $ID_LIKE in
+    debian)
+      echo "sudo apt install $1"
+      ;;
+    redhat)
+      echo "sudo yum install $1"
+      ;;
+  esac
+}
+
+i_t;bold;echo  -n "dStor Outpost Quickstart ";r_t;p_t; echo "$VERSION";r_t
+
+break_t
+
+SHD=$PWD
+for f in functions/*; do
+  source "$f"
+  break_t
+  cd $SHD
+done
+
+JSON_RESULTS="{
+  'ECHO_SERVER': '$ECHO_SERVER',
+  'ID': '$(echo "$ID" | base64 -w 0)',
+  'ID_LIKE': '$ID_LIKE',
+  'LSB_RELEASE': '$(echo "$LSB_RELEASE" | base64 -w 0)',
+  'VERSION': '$VERSION',
+  'EGREP_V': '$EGREP_V',
+  'BUSYBOX_V': '$BUSYBOX_V',
+  'JQ_V': '$JQ_V',
+  'CURL_V': '$CURL_V',
+  'STCLI_V': '$STCLI_V',
+  'NGINX_V': '$NGINX_V',
+  'MILLER_V': '$MILLER_V',
+  'CERTBOT_V': '$CERTBOT_V',
+  'UPAVG': '$UPAVG',
+  'DOAVG': '$DOAVG',
+  'PIAVG': '$PIAVG',
+  'IP6': '$IP6',
+  'IP4': '$IP4',
+  'TESTUUID': '$TESTUUID',
+  'IP4P80': '$IP4P80',
+  'IP4P443': '$IP4P443',
+  'IP4P4001': '$IP4P4001',
+  'IP6P80': '$IP6P80',
+  'IP6P443': '$IP6P443',
+  'IP6P4001': '$IP6P4001',
+  'EIP4P80': '$EIP4P80',
+  'EIP4P443': '$EIP4P443',
+  'EIP4P4001': '$EIP4P4001',
+  'EIP6P80': '$EIP6P80',
+  'EIP6P443': '$EIP6P443',
+  'EIP6P4001': '$EIP6P4001',
+  'PDATA_SIZE': '$PDATA_SIZE',
+  'PCACHE_SIZE': '$PCACHE_SIZE',
+  'PDATA_PATH': '$PDATA_PATH',
+  'PCACHE_PATH': '$PCACHE_PATH',
+  'SPEEDTEST': [
+$SPEEDTEST
+  ]
+}"
+RESULTS=$(mktemp --tmpdir=$HOME/.dStor 'XXXXX.results')
+p_t;echo "Saving results to $RESULTS";r_t
+
+echo "$JSON_RESULTS" | tr \' \" > $RESULTS

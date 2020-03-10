@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+
+service_file="
+[Unit]
+Description=dStor IPFS
+After=network.target
+
+[Service]
+Type=simple
+User=$(id -un)
+Group=$(id -gn)
+
+Restart=on-failure
+RestartSec=10
+StartLimitIntervalSec=60
+
+WorkingDirectory=$HOME
+ExecStart=$HOME/go/bin/ipfs daemon --enable-pubsub-experiment
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ipfs
+
+[Install]
+WantedBy=multi-user.target
+"
+
+echo "$service_file" | sudo tee /lib/systemd/system/ipfs.service
+
+sudo systemctl enable ipfs
+sudo systemctl restart ipfs
+sudo systemctl status ipfs
+
+# this isn't a mistake, it's just laziness
+
+service_file="
+[Unit]
+Description=dStor IPFS P2P Listener
+After=ipfs.service
+
+[Service]
+Type=simple
+User=$(id -un)
+Group=$(id -gn)
+
+Restart=on-failure
+RestartSec=10
+StartLimitIntervalSec=60
+
+WorkingDirectory=$HOME
+ExecStart=/usr/local/bin/outpost-cli OpListenP2P
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=dstor-p2p-listen
+
+[Install]
+WantedBy=multi-user.target
+"
+echo "$service_file" | sudo tee /lib/systemd/system/dstor-p2p-listen.service
+sudo systemctl enable dstor-p2p-listen
+sudo systemctl restart dstor-p2p-listen
+sudo systemctl status dstor-p2p-listen
+
+# Systemd
+# crontab -e
+echo '
+If everything looks right, add your heartbeat to cron:
+*/1 * * * * /usr/local/bin/outpost-cli OpHeartbeat 2>&1 | logger -t dstor-heartbeat
+'

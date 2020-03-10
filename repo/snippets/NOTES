@@ -1,0 +1,5 @@
+### Ubuntu 18.04.4/20.04 does not have a default mapping for Python
+Ubuntu is currently moving from Python 2 to Python 3 as its default Python installation.  With Ubuntu 20.04, the environment shell script can't find "python" because it hasn't been mapped to a default Python 3.  To fix this run:
+```
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+```

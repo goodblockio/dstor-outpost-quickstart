@@ -1,0 +1,22 @@
+[Unit]
+Description=dStor IPFS
+After=network.target
+
+[Service]
+Type=simple
+User=dstor-outpost
+Group=dstor-outpost
+
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+WorkingDirectory=/data/dstor-outpost
+ExecStart=/data/dstor-outpost/go/bin/ipfs daemon --enable-pubsub-experiment
+
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=ipfs
+
+[Install]
+WantedBy=multi-user.target
