@@ -12,7 +12,8 @@ Group=$(id -gn)
 
 Restart=on-failure
 RestartSec=10
-StartLimitIntervalSec=60
+StartLimitBurst=3
+StartLimitInterval=10s
 
 WorkingDirectory=$HOME
 ExecStart=$HOME/go/bin/ipfs daemon --enable-pubsub-experiment
@@ -37,6 +38,7 @@ service_file="
 [Unit]
 Description=dStor IPFS P2P Listener
 After=ipfs.service
+Requires=ipfs.service
 
 [Service]
 Type=simple
@@ -45,7 +47,8 @@ Group=$(id -gn)
 
 Restart=on-failure
 RestartSec=10
-StartLimitIntervalSec=60
+StartLimitBurst=3
+StartLimitInterval=10s
 
 WorkingDirectory=$HOME
 ExecStart=/usr/local/bin/outpost-cli OpListenP2P
