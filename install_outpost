@@ -70,4 +70,5 @@ sudo systemctl status dstor-p2p-listen
 echo '
 If everything looks right, add your heartbeat to cron:
 */1 * * * * /usr/local/bin/outpost-cli OpHeartbeat 2>&1 | logger -t dstor-heartbeat
+*/15 * * * * /usr/local/bin/outpost-cli OpGetApiServers | logger -t dstor-getapiservers
 '

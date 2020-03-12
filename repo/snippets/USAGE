@@ -2,7 +2,7 @@
 ```
 # Format and mount your /data and /cache partitions somewhere ( don't forget fstab! )
 
-sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx
+sudo apt install jq curl nginx miller certbot uuid-runtime busybox net-tools build-essential python3-certbot-nginx redis
 sudo snap install go --classic --channel=1.14/stable
 
 sudo systemctl stop nginx
@@ -32,7 +32,7 @@ cd dstor-outpost-quickstart
 ./install_cli
  outpost-cli OpRegisterOutpost <account_key> <invite_key> <Country Code> <Path to valid results file>
 
- # Use a valid email, no redirect
+ # Use a valid email, no HTTP SSL redirect
  ./install_certbot
  ./install_outpost
 
